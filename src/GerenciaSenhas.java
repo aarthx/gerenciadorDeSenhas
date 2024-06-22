@@ -116,16 +116,16 @@ public class GerenciaSenhas {
                     escritorDeSenhas.write(linha);
                 }
             }
-    
+            
             // Reordenar os números das senhas restantes
-            for (int i = numeroDaSenha; i < qtdSenhas - 1; i++) {
+            for (int i = numeroDaSenha; i <= qtdSenhas - 1; i++) {
                 // Atualiza as chaves
-                String linhaChave = linhasChaves.get(i).replaceFirst("Chave " + i, "Chave " + (i + 1));
-                linhasChaves.set(i, linhaChave);
+                String linhaChave = linhasChaves.get(i - 1).replaceFirst("Chave " + (i + 1), "Chave " + (i));
+                linhasChaves.set(i - 1, linhaChave);
     
                 // Atualiza as senhas
-                String linhaSenha = linhasSenhas.get(i).replaceFirst("Senha " + i, "Senha " + (i + 1));
-                linhasSenhas.set(i, linhaSenha);
+                String linhaSenha = linhasSenhas.get(i - 1).replaceFirst("Senha " + (i + 1), "Senha " + (i));
+                linhasSenhas.set(i - 1, linhaSenha);
             }
     
             // Escrever de volta no arquivo de chaves
