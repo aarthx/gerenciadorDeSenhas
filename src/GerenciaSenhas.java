@@ -1,5 +1,13 @@
 package src;
 import javax.crypto.SecretKey;
+
+import dao.ChaveDAO;
+import dao.ChaveDaoImpl;
+import dao.SenhaDAO;
+import dao.SenhaDaoImpl;
+import models.Chave;
+import models.Senha;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,36 +15,44 @@ import java.util.List;
 public class GerenciaSenhas {
     private static final String PASSWORD_FILE = "senhas.txt";
     private static final String KEY_FILE = "chaves.txt";
-
-    public static int contaLinhas(String PASSWORD_FILE) {
+    
+    public static int contaLinhas() {
         int qtdSenhas = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(PASSWORD_FILE))) {
-            while (reader.readLine() != null) {
-                qtdSenhas++;
-            }
-        } catch (IOException e) {
-            System.err.println("Erro ao ler o arquivo: " + e.getMessage());
+        try {
+            SenhaDAO senhaDao = new SenhaDaoImpl();
+            qtdSenhas = senhaDao.getQuantidadeSenhas();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return qtdSenhas;
     }
 
-    public static void adicionaSenha(String novaSenha, String KEY_FILE, String PASSWORD_FILE, int qtdSenhas) {
+    public static void adicionaSenha(String novaSenha) {
         try {
+            SenhaDAO senhaDao = new SenhaDaoImpl();
+            ChaveDAO chaveDao = new ChaveDaoImpl();
             SecretKey key = Criptografador.generateKey();
-            try (FileWriter escritorDeChaves = new FileWriter(KEY_FILE, true)) {
-                escritorDeChaves.write("Chave " + qtdSenhas + " - ");
-                escritorDeChaves.write(Criptografador.keyToString(key));
-                escritorDeChaves.write('\n');
+            int idAtual = -1;
+            try {
+                Chave novaChave = new Chave();
+                novaChave.setChave(Criptografador.keyToString(key));
+                chaveDao.insertChave(novaChave);
+                idAtual = novaChave.getId();
+            } catch(Exception e) {
+                e.printStackTrace();
             }
 
             String encryptedPassword = Criptografador.encrypt(novaSenha, key);
-            try (BufferedWriter escritor = new BufferedWriter(
-                    new OutputStreamWriter(new FileOutputStream(PASSWORD_FILE, true), "UTF-8"))) {
-                escritor.write("Senha " + qtdSenhas + " - ");
-                escritor.write(encryptedPassword);
-                escritor.newLine();
-            } catch (IOException e) {
-                System.err.println("Ocorreu um erro ao escrever no arquivo: " + e.getMessage());
+
+            try {
+                Senha novaSenhaBD = new Senha();
+                novaSenhaBD.setSenha(encryptedPassword);
+                if(idAtual != -1) {
+                    novaSenhaBD.setFK_idChave(idAtual);
+                }
+                senhaDao.insertSenha(novaSenhaBD);
+            } catch(Exception e) {
+                e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,37 +60,30 @@ public class GerenciaSenhas {
     }
 
     public static List<String> mostraSenhas(String KEY_FILE, String PASSWORD_FILE, int qtdSenhas) {
+        SenhaDAO senhaDao = new SenhaDaoImpl();
+        ChaveDAO chaveDao = new ChaveDaoImpl();
+        List<Senha> senhasBD = senhaDao.getAllSenhas();
         List<String> senhas = new ArrayList<>();
+        int contador = 1;
         try {
-            for (int i = 1; i <= qtdSenhas; i++) {
+            for(Senha senha : senhasBD) {
                 SecretKey key = null;
-                try (BufferedReader reader = new BufferedReader(new FileReader(KEY_FILE))) {
-                    String base64key;
-                    for (int j = 1; j < i; j++) {
-                        reader.readLine();
-                    }
-                    base64key = reader.readLine().split(" ")[3];
+                try {
+                    int idDaChave = senha.getFK_idChave();
+                    Chave chaveAtual = chaveDao.getChave(idDaChave);
+                    String base64key = chaveAtual.getChave();
                     key = Criptografador.stringToKey(base64key);
+                    String senhaDecriptada = Criptografador.decrypt(senha.getSenha(), key);
+                    senhas.add("Senha " + contador + " - " + senhaDecriptada);
+                    contador++;
                 } catch (Exception e) {
                     System.err.println(e);
                 }
-
-                try (BufferedReader reader = new BufferedReader(new FileReader(PASSWORD_FILE))) {
-                    for (int j = 1; j < i; j++) {
-                        reader.readLine();
-                    }
-                    String senhaEncriptada = reader.readLine().split(" ")[3];
-                    if (key != null) {
-                        String senhaDecriptada = Criptografador.decrypt(senhaEncriptada, key);
-                        senhas.add("Senha " + i + " - " + senhaDecriptada);
-                    }
-                } catch (Exception e) {
-                    System.err.println("Erro ao ler arquivo");
-                }
-            }
+            }   
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return senhas;
     }
 

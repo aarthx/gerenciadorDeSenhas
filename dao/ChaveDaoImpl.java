@@ -25,7 +25,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 		List<Chave> chaves = new ArrayList<Chave>();
 		try {
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM Chaves");
+			ResultSet rs = st.executeQuery("SELECT * FROM chaves");
 			
 			while(rs.next())
 			{
@@ -47,7 +47,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 		Chave chave = new Chave();
 	
 		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Chave WHERE idChave=?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM chaves WHERE idChave=?");
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
 
@@ -67,7 +67,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 	public void updateChave(Chave chave) {
 		
 		try {
-			PreparedStatement ps = conn.prepareStatement("UPDATE Chave SET chave=? WHERE idChave=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE chaves SET chave=? WHERE idChave=?");
 			ps.setString(1,chave.getChave());
 			ps.setInt(2,chave.getId());
 			ps.executeUpdate();
@@ -80,11 +80,29 @@ public class ChaveDaoImpl implements ChaveDAO {
 	@Override
 	public void deleteChave(Chave chave) {
 		try {
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM USER WHERE idChave=?");
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM chaves WHERE idChave=?");
 			ps.setInt(1, chave.getId());
 			ps.executeUpdate();
 
 		} catch(SQLException e) {	
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void insertChave(Chave chave) {
+		try {
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO chaves (Chave) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1, chave.getChave());
+			ps.executeUpdate();
+
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				int id = rs.getInt(1);
+				chave.setId(id); // Definir o ID gerado no objeto Chave
+			}
+
+		} catch(SQLException e) {    
 			e.printStackTrace();
 		}
 	}

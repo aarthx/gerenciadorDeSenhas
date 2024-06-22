@@ -52,7 +52,7 @@ public class ExcluirSenhaFrame extends JFrame {
         String numeroDaSenhaStr = numeroSenhaField.getText();
         if (!numeroDaSenhaStr.isEmpty()) {
             int numeroDaSenha = Integer.parseInt(numeroDaSenhaStr);
-            int qtdSenhas = GerenciaSenhas.contaLinhas("senhas.txt");
+            int qtdSenhas = GerenciaSenhas.contaLinhas();
 
             if (numeroDaSenha > qtdSenhas || numeroDaSenha <= 0) {
                 JOptionPane.showMessageDialog(this, "Número de senha inválido!");

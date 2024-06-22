@@ -25,7 +25,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 		List<Senha> senhas = new ArrayList<Senha>();
 		try {
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM Senhas");
+			ResultSet rs = st.executeQuery("SELECT * FROM senhas");
 			
 			while(rs.next())
 			{
@@ -48,7 +48,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 		Senha senha = new Senha();
 	
 		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Senha WHERE idSenha=?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM senhas WHERE idSenha=?");
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
 
@@ -69,7 +69,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 	public void updateSenha(Senha senha) {
 		
 		try {
-			PreparedStatement ps = conn.prepareStatement("UPDATE Senha SET senha=?, WHERE idSenha=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE senhas SET senha=? WHERE idSenha=?");
 			ps.setString(1,senha.getSenha());
 			ps.setInt(2,senha.getId());
 			ps.executeUpdate();
@@ -82,7 +82,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 	@Override
 	public void deleteSenha(Senha senha) {
 		try {
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM USER WHERE idSenha=?");
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM senhas WHERE idSenha=?");
 			ps.setInt(1, senha.getId());
 			ps.executeUpdate();
 
@@ -91,5 +91,42 @@ public class SenhaDaoImpl implements SenhaDAO {
 		}
 	}
 
+	@Override
+	public void insertSenha(Senha senha) {
+		try {
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO senhas (senha, FK_idChave) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1, senha.getSenha());
+			ps.setInt(2, senha.getFK_idChave());
+			ps.executeUpdate();
+
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				int id = rs.getInt(1);
+				senha.setId(id); // Definir o ID gerado no objeto Chave
+			}
+
+		} catch(SQLException e) {    
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+    public int getQuantidadeSenhas() {
+        int quantidade = 0;
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS quantidade FROM senhas");
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                quantidade = rs.getInt("quantidade");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return quantidade;
+    }
 
 }

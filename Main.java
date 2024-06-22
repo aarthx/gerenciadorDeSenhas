@@ -17,13 +17,5 @@ public class Main
 			System.out.println("ID: " + senha.getId() + ", Senha: " + senha.getSenha());
 		}
 
-		Senha senha = senhaDao.getSenha(1);
-		System.out.println("ID: "+ senha.getId() + ", Senha: "+senha.getSenha());
-
-		// senha.setSenha("Jubileu123");
-		// senhaDao.updateSenha(senha);
-
-		//chaveDao.deleteSenha(senha);
-
 	}
 }

@@ -10,5 +10,6 @@ public interface ChaveDAO
 	public Chave getChave(int id);
 	public void updateChave(Chave chave);
 	public void deleteChave(Chave chave);
+	public void insertChave(Chave chave);
 
 }

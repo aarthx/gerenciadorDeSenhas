@@ -51,9 +51,8 @@ public class AdicionarSenhaFrame extends JFrame {
     private void adicionarSenha() {
         String novaSenha = senhaField.getText();
         if (!novaSenha.isEmpty()) {
-            int qtdSenhas = GerenciaSenhas.contaLinhas("senhas.txt") + 1;
             try {
-                GerenciaSenhas.adicionaSenha(novaSenha, "chaves.txt", "senhas.txt", qtdSenhas);
+                GerenciaSenhas.adicionaSenha(novaSenha);
                 JOptionPane.showMessageDialog(this, "Senha adicionada com sucesso!");
                 senhaField.setText("");
             } catch (Exception e) {

@@ -34,7 +34,7 @@ public class VisualizarSenhasFrame extends JFrame {
     }
 
     private void visualizarSenhas() {
-        int qtdSenhas = GerenciaSenhas.contaLinhas("senhas.txt");
+        int qtdSenhas = GerenciaSenhas.contaLinhas();
         if (qtdSenhas != 0) {
             try {
                 List<String> senhas = GerenciaSenhas.mostraSenhas("chaves.txt", "senhas.txt", qtdSenhas);

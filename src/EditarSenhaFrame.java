@@ -67,7 +67,7 @@ public class EditarSenhaFrame extends JFrame {
         String novaSenha = novaSenhaField.getText();
         if (!numeroDaSenhaStr.isEmpty() && !novaSenha.isEmpty()) {
             int numeroDaSenha = Integer.parseInt(numeroDaSenhaStr);
-            int qtdSenhas = GerenciaSenhas.contaLinhas("senhas.txt");
+            int qtdSenhas = GerenciaSenhas.contaLinhas();
             if (numeroDaSenha > qtdSenhas || numeroDaSenha <= 0) {
                 JOptionPane.showMessageDialog(this, "Número de senha inválido!");
             } else {
