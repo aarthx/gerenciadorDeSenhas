@@ -19,10 +19,10 @@
     <cp>bd/mysql-connector-j-8.4.0.jar</cp>
   </classPath>
   <jre>
-    <path>jre</path>
-    <requiresJdk>true</requiresJdk>
-    <requires64Bit>true</requires64Bit>
-    <minVersion>1.8</minVersion>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion></minVersion>
     <maxVersion></maxVersion>
   </jre>
 </launch4jConfig>
