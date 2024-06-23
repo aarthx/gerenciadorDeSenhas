@@ -25,7 +25,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 		List<Senha> senhas = new ArrayList<Senha>();
 		try {
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM senhas");
+			ResultSet rs = st.executeQuery("SELECT * FROM Senhas");
 			
 			while(rs.next())
 			{
@@ -48,7 +48,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 		Senha senha = new Senha();
 	
 		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM senhas WHERE idSenha=?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Senhas WHERE idSenha=?");
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
 
@@ -69,7 +69,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 	public void updateSenha(Senha senha) {
 		
 		try {
-			PreparedStatement ps = conn.prepareStatement("UPDATE senhas SET senha=? WHERE idSenha=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE Senhas SET senha=? WHERE idSenha=?");
 			ps.setString(1,senha.getSenha());
 			ps.setInt(2,senha.getId());
 			ps.executeUpdate();
@@ -82,7 +82,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 	@Override
 	public void deleteSenha(Senha senha) {
 		try {
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM senhas WHERE idSenha=?");
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM Senhas WHERE idSenha=?");
 			ps.setInt(1, senha.getId());
 			ps.executeUpdate();
 
@@ -94,7 +94,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 	@Override
 	public void insertSenha(Senha senha) {
 		try {
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO senhas (senha, FK_idChave) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO Senhas (senha, FK_idChave) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, senha.getSenha());
 			ps.setInt(2, senha.getFK_idChave());
 			ps.executeUpdate();
@@ -115,7 +115,7 @@ public class SenhaDaoImpl implements SenhaDAO {
         int quantidade = 0;
 
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS quantidade FROM senhas");
+            PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS quantidade FROM Senhas");
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -133,7 +133,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 	public int mapeiaSenha(int num) {
 		int idSenhaADeletar = -1;
 		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT idSenha, senha FROM senhas");
+			PreparedStatement ps = conn.prepareStatement("SELECT idSenha, senha FROM Senhas");
 			ResultSet rs = ps.executeQuery();
 				
 			ArrayList<Integer> idSenhas = new ArrayList<>();

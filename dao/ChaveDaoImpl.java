@@ -47,7 +47,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 		Chave chave = new Chave();
 	
 		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM chaves WHERE idChave=?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Chaves WHERE idChave=?");
 			ps.setInt(1,id);
 			ResultSet rs = ps.executeQuery();
 
@@ -67,7 +67,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 	public void updateChave(Chave chave) {
 		
 		try {
-			PreparedStatement ps = conn.prepareStatement("UPDATE chaves SET chave=? WHERE idChave=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE Chaves SET chave=? WHERE idChave=?");
 			ps.setString(1,chave.getChave());
 			ps.setInt(2,chave.getId());
 			ps.executeUpdate();
@@ -80,7 +80,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 	@Override
 	public void deleteChave(Chave chave) {
 		try {
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM chaves WHERE idChave=?");
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM Chaves WHERE idChave=?");
 			ps.setInt(1, chave.getId());
 			ps.executeUpdate();
 
@@ -92,7 +92,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 	@Override
 	public void insertChave(Chave chave) {
 		try {
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO chaves (Chave) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO Chaves (Chave) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, chave.getChave());
 			ps.executeUpdate();
 

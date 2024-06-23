@@ -9,9 +9,9 @@ public class DBConnection
 
 	public static Connection getConnection()
 	{
-		String url = "jdbc:mysql://localhost:3306/GerenciaSenhas";
-        	String user = "root";
-        	String password = "undf";
+		String url = "jdbc:mysql://avnadmin:AVNS_JGspMvhNlN6_UMHCzLA@mysql-1369263b-arthuraugusto-e96c.d.aivencloud.com:26176/GerenciaSenhas?ssl-mode=REQUIRED";
+        	String user = "avnadmin";
+        	String password = "AVNS_JGspMvhNlN6_UMHCzLA";
 
 		try
 		{
