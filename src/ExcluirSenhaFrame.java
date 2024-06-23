@@ -58,7 +58,7 @@ public class ExcluirSenhaFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Número de senha inválido!");
             } else {
                 try {
-                    GerenciaSenhas.excluiSenha(numeroDaSenha, "chaves.txt", "senhas.txt", qtdSenhas);
+                    GerenciaSenhas.excluiSenha(numeroDaSenha);
                     JOptionPane.showMessageDialog(this, "Senha excluída com sucesso!");
 
                     dispose(); // Fecha o frame após a exclusão

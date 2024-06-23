@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class VisualizarSenhasFrame extends JFrame {
+public class VisualizarSenhasFrame extends JFrame implements SenhaListener{
     private JTextArea senhasArea;
 
     public VisualizarSenhasFrame() {
@@ -30,6 +30,7 @@ public class VisualizarSenhasFrame extends JFrame {
 
         add(scrollPane, gbc);
 
+        GerenciaSenhas.addSenhaListener(this);
         visualizarSenhas();
     }
 
@@ -37,7 +38,7 @@ public class VisualizarSenhasFrame extends JFrame {
         int qtdSenhas = GerenciaSenhas.contaLinhas();
         if (qtdSenhas != 0) {
             try {
-                List<String> senhas = GerenciaSenhas.mostraSenhas("chaves.txt", "senhas.txt", qtdSenhas);
+                List<String> senhas = GerenciaSenhas.mostraSenhas();
                 senhasArea.setText("");
                 for (String senha : senhas) {
                     senhasArea.append(senha + "\n");
@@ -49,5 +50,15 @@ public class VisualizarSenhasFrame extends JFrame {
         } else {
             senhasArea.setText("Arquivo sem senhas ainda!");
         }
+    }
+
+    @Override
+    public void senhasAtualizadas() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                visualizarSenhas();
+            }
+        });
     }
 }

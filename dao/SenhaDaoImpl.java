@@ -129,4 +129,30 @@ public class SenhaDaoImpl implements SenhaDAO {
         return quantidade;
     }
 
+	@Override
+	public int mapeiaSenha(int num) {
+		int idSenhaADeletar = -1;
+		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT idSenha, senha FROM senhas");
+			ResultSet rs = ps.executeQuery();
+				
+			ArrayList<Integer> idSenhas = new ArrayList<>();
+			ArrayList<String> senhas = new ArrayList<>();
+			
+			while (rs.next()) {
+				int idSenha = rs.getInt("idSenha");
+				idSenhas.add(idSenha);
+				String senha = rs.getString("senha");
+				senhas.add(senha);
+			}
+			idSenhaADeletar = idSenhas.get(num - 1);
+			
+			
+		} catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return idSenhaADeletar;
+	}
+
 }

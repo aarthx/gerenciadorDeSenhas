@@ -8,14 +8,25 @@ import dao.SenhaDaoImpl;
 import models.Chave;
 import models.Senha;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GerenciaSenhas {
-    private static final String PASSWORD_FILE = "senhas.txt";
-    private static final String KEY_FILE = "chaves.txt";
     
+    private static List<SenhaListener> listeners = new CopyOnWriteArrayList<>();
+    public static void addSenhaListener(SenhaListener listener) {
+        listeners.add(listener);
+    }
+    public static void removeSenhaListener(SenhaListener listener) {
+        listeners.remove(listener);
+    }
+    private static void notifySenhasAtualizadas() {
+        for (SenhaListener listener : listeners) {
+            listener.senhasAtualizadas();
+        }
+    }
+
     public static int contaLinhas() {
         int qtdSenhas = 0;
         try {
@@ -51,6 +62,7 @@ public class GerenciaSenhas {
                     novaSenhaBD.setFK_idChave(idAtual);
                 }
                 senhaDao.insertSenha(novaSenhaBD);
+                notifySenhasAtualizadas();
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -59,7 +71,7 @@ public class GerenciaSenhas {
         }
     }
 
-    public static List<String> mostraSenhas(String KEY_FILE, String PASSWORD_FILE, int qtdSenhas) {
+    public static List<String> mostraSenhas() {
         SenhaDAO senhaDao = new SenhaDaoImpl();
         ChaveDAO chaveDao = new ChaveDaoImpl();
         List<Senha> senhasBD = senhaDao.getAllSenhas();
@@ -79,7 +91,7 @@ public class GerenciaSenhas {
                 } catch (Exception e) {
                     System.err.println(e);
                 }
-            }   
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,118 +99,52 @@ public class GerenciaSenhas {
         return senhas;
     }
 
-    public static void excluiSenha(int numeroDaSenha, String KEY_FILE, String PASSWORD_FILE, int qtdSenhas) {
-        if (numeroDaSenha > qtdSenhas || numeroDaSenha <= 0) {
+    public static void excluiSenha(int numeroDaSenha) {
+        if (numeroDaSenha > GerenciaSenhas.contaLinhas() || numeroDaSenha <= 0) {
             System.out.println("Número de senha inválido!");
             return;
         }
-    
-        try {
-            // Remover a linha correspondente da chave
-            List<String> linhasChaves = new ArrayList<>();
-            try (BufferedReader reader = new BufferedReader(new FileReader(KEY_FILE))) {
-                String linha;
-                while ((linha = reader.readLine()) != null) {
-                    linhasChaves.add(linha + '\n');
-                }
-            }
-            linhasChaves.remove(numeroDaSenha - 1); // Remove a linha da chave
-    
-            try (FileWriter escritorDeChaves = new FileWriter(KEY_FILE)) {
-                for (String linha : linhasChaves) {
-                    escritorDeChaves.write(linha);
-                }
-            }
-    
-            // Remover a linha correspondente da senha
-            List<String> linhasSenhas = new ArrayList<>();
-            try (BufferedReader reader = new BufferedReader(new FileReader(PASSWORD_FILE))) {
-                String linha;
-                while ((linha = reader.readLine()) != null) {
-                    linhasSenhas.add(linha + '\n');
-                }
-            }
-            linhasSenhas.remove(numeroDaSenha - 1); // Remove a linha da senha
-    
-            try (FileWriter escritorDeSenhas = new FileWriter(PASSWORD_FILE)) {
-                for (String linha : linhasSenhas) {
-                    escritorDeSenhas.write(linha);
-                }
-            }
-    
-            // Reordenar os números das senhas restantes
-            for (int i = numeroDaSenha; i <= qtdSenhas - 1; i++) {
-                // Atualiza as chaves
-                String linhaChave = linhasChaves.get(i - 1).replaceFirst("Chave " + (i + 1), "Chave " + i);
-                linhasChaves.set(i - 1, linhaChave);
-    
-                // Atualiza as senhas
-                String linhaSenha = linhasSenhas.get(i - 1).replaceFirst("Senha " + (i + 1), "Senha " + i);
-                linhasSenhas.set(i - 1, linhaSenha);
-            }
-            qtdSenhas--;
-            // Escrever de volta no arquivo de chaves
-            try (FileWriter escritorDeChaves = new FileWriter(KEY_FILE)) {
-                for (String linha : linhasChaves) {
-                    escritorDeChaves.write(linha);
-                }
-            }
-    
-            // Escrever de volta no arquivo de senhas
-            try (FileWriter escritorDeSenhas = new FileWriter(PASSWORD_FILE)) {
-                for (String linha : linhasSenhas) {
-                    escritorDeSenhas.write(linha);
-                }
-            }
-    
-        } catch (IOException e) {
+        SenhaDAO senhaDao = new SenhaDaoImpl();
+        ChaveDAO chaveDao = new ChaveDaoImpl();
+
+        try {  
+            int idSenhaADeletar = senhaDao.mapeiaSenha(numeroDaSenha);
+            Senha senhaADeletar = senhaDao.getSenha(idSenhaADeletar);
+            Chave chaveADeletar = chaveDao.getChave(senhaADeletar.getFK_idChave());
+            senhaDao.deleteSenha(senhaADeletar);
+            chaveDao.deleteChave(chaveADeletar);
+            notifySenhasAtualizadas();
+        } catch (Exception e) {
             System.err.println("Erro ao manipular arquivo: " + e.getMessage());
         }
     }
 
-    public static void atualizaSenhas(String novaSenha, String KEY_FILE, String PASSWORD_FILE, int numeroDaSenha, int qtdSenhas) {
-        if (numeroDaSenha <= qtdSenhas || qtdSenhas != 0) {
-            try {
-                SecretKey key = Criptografador.generateKey();
-                List<String> linhas = new ArrayList<>();
-
-                try (BufferedReader reader = new BufferedReader(new FileReader(KEY_FILE))) {
-                    String linha;
-                    while ((linha = reader.readLine()) != null) {
-                        linhas.add(linha + '\n');
-                    }
-                }
-
-                String novaLinha = "Chave " + numeroDaSenha + " - " + Criptografador.keyToString(key) + '\n';
-                linhas.set(numeroDaSenha - 1, novaLinha);
-                try (FileWriter escritorDeChaves = new FileWriter(KEY_FILE)) {
-                    for (String linha : linhas) {
-                        escritorDeChaves.write(linha);
-                    }
-                }
-
-                linhas.clear();
-
-                try (BufferedReader reader = new BufferedReader(new FileReader(PASSWORD_FILE))) {
-                    String linha;
-                    while ((linha = reader.readLine()) != null) {
-                        linhas.add(linha + '\n');
-                    }
-                }
-
-                novaLinha = "Senha " + numeroDaSenha + " - " + Criptografador.encrypt(novaSenha, key) + '\n';
-                linhas.set(numeroDaSenha - 1, novaLinha);
-                try (FileWriter escritorDeChaves = new FileWriter(PASSWORD_FILE)) {
-                    for (String linha : linhas) {
-                        escritorDeChaves.write(linha);
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Ainda não há senhas, ou número inválido de senha!");
+    public static void atualizaSenhas(String novaSenha, int numeroDaSenha) {
+        if (numeroDaSenha > GerenciaSenhas.contaLinhas() || numeroDaSenha <= 0) {
+            System.out.println("Número de senha inválido!");
+            return;
         }
+        SenhaDAO senhaDao = new SenhaDaoImpl();
+        ChaveDAO chaveDao = new ChaveDaoImpl();
+
+        try {
+            int idSenhaAEditar = senhaDao.mapeiaSenha(numeroDaSenha);
+            Senha senhaAEditar = senhaDao.getSenha(idSenhaAEditar);
+            int idChaveAEditar = senhaAEditar.getFK_idChave();
+            Chave chaveAEditar = chaveDao.getChave(idChaveAEditar);
+            
+            SecretKey key = Criptografador.generateKey();
+            String novaChave = Criptografador.keyToString(key);
+            chaveAEditar.setChave(novaChave);
+            chaveDao.updateChave(chaveAEditar);
+
+            String senhaEditada = Criptografador.encrypt(novaSenha, key);
+            senhaAEditar.setSenha(senhaEditada);
+            senhaDao.updateSenha(senhaAEditar);
+            notifySenhasAtualizadas();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 }

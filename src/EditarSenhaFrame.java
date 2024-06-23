@@ -72,7 +72,7 @@ public class EditarSenhaFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Número de senha inválido!");
             } else {
                 try {
-                    GerenciaSenhas.atualizaSenhas(novaSenha, "chaves.txt", "senhas.txt", numeroDaSenha, qtdSenhas);
+                    GerenciaSenhas.atualizaSenhas(novaSenha, numeroDaSenha);
                     JOptionPane.showMessageDialog(this, "Senha atualizada com sucesso!");
                     numeroSenhaField.setText("");
                     novaSenhaField.setText("");
