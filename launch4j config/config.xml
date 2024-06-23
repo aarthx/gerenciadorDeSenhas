@@ -2,22 +2,18 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>D:\Arthur\Faculdade UnDF\2° Período\Bases da Computação 2\ProjetoJava\ProjetoJava.jar</jar>
+  <jar>D:\Arthur\Faculdade UnDF\2° Período\Bases da Computação 2\ProjetoJava\bin\ProjetoJava.jar</jar>
   <outfile>D:\Arthur\Faculdade UnDF\2° Período\Bases da Computação 2\ProjetoJava\Senhas.exe</outfile>
-  <errTitle>Please install java.</errTitle>
+  <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
   <priority>normal</priority>
-  <downloadUrl>http://java.com/download</downloadUrl>
+  <downloadUrl></downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
-  <restartOnCrash>true</restartOnCrash>
+  <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
   <icon>C:\Users\Arthur\Desktop\gold-key.ico</icon>
-  <singleInstance>
-    <mutexName>KeyManagement</mutexName>
-    <windowTitle>KeyManagement</windowTitle>
-  </singleInstance>
   <classPath>
     <mainClass>InterfaceSenhas</mainClass>
     <cp>bd/mysql-connector-j-8.4.0.jar</cp>
@@ -26,21 +22,7 @@
     <path>%JAVA_HOME%;%PATH%</path>
     <requiresJdk>false</requiresJdk>
     <requires64Bit>false</requires64Bit>
-    <minVersion>21</minVersion>
+    <minVersion></minVersion>
     <maxVersion></maxVersion>
   </jre>
-  <versionInfo>
-    <fileVersion>1.0.0.0</fileVersion>
-    <txtFileVersion>1.0.0.0</txtFileVersion>
-    <fileDescription>Key Management Software</fileDescription>
-    <copyright>NIL</copyright>
-    <productVersion>1.0.0.0</productVersion>
-    <txtProductVersion>1.0.0.0</txtProductVersion>
-    <productName>KeyManagement</productName>
-    <companyName>Arthur Company</companyName>
-    <internalName>KeyManagement</internalName>
-    <originalFilename>KeyManagement.exe</originalFilename>
-    <trademarks></trademarks>
-    <language>ENGLISH_US</language>
-  </versionInfo>
 </launch4jConfig>
