@@ -27,8 +27,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * FROM chaves");
 			
-			while(rs.next())
-			{
+			while(rs.next()) {
 				Chave chave = new Chave();
 				chave.setId(rs.getInt("idChave"));
 				chave.setChave(rs.getString("chave"));
@@ -99,7 +98,7 @@ public class ChaveDaoImpl implements ChaveDAO {
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				int id = rs.getInt(1);
-				chave.setId(id); // Definir o ID gerado no objeto Chave
+				chave.setId(id);
 			}
 
 		} catch(SQLException e) {    

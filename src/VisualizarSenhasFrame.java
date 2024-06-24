@@ -15,10 +15,10 @@ public class VisualizarSenhasFrame extends JFrame implements SenhaListener{
 
         senhasArea = new JTextArea();
         senhasArea.setEditable(false);
-        senhasArea.setFont(new Font("Monospaced", Font.BOLD, 16)); // Ajustando tamanho da fonte da área de texto
+        senhasArea.setFont(new Font("Monospaced", Font.BOLD, 16));
 
         JScrollPane scrollPane = new JScrollPane(senhasArea);
-        scrollPane.setPreferredSize(new Dimension(380, 250)); // Ajustando tamanho do scrollPane
+        scrollPane.setPreferredSize(new Dimension(380, 250));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -26,7 +26,7 @@ public class VisualizarSenhasFrame extends JFrame implements SenhaListener{
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(10, 10, 10, 10); // Espaçamento entre os componentes
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         add(scrollPane, gbc);
 

@@ -102,7 +102,7 @@ public class SenhaDaoImpl implements SenhaDAO {
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				int id = rs.getInt(1);
-				senha.setId(id); // Definir o ID gerado no objeto Chave
+				senha.setId(id);
 			}
 
 		} catch(SQLException e) {    

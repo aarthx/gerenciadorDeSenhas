@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>D:\Arthur\Faculdade UnDF\2° Período\Bases da Computação 2\ProjetoJava\bin\ProjetoJava.jar</jar>
-  <outfile>D:\Arthur\Faculdade UnDF\2° Período\Bases da Computação 2\ProjetoJava\Senhas.exe</outfile>
+  <outfile>D:\Arthur\Faculdade UnDF\2° Período\Bases da Computação 2\ProjetoJava\GerenciaSenhas.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>

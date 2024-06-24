@@ -36,7 +36,7 @@ public class EditarSenhaFrame extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 10, 5, 10); // Espaçamento entre os componentes
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
 
         add(numeroSenhaLabel, gbc);
 
@@ -84,15 +84,5 @@ public class EditarSenhaFrame extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Por favor, insira o número da senha e a nova senha.");
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                EditarSenhaFrame frame = new EditarSenhaFrame();
-                frame.setVisible(true);
-            }
-        });
     }
 }

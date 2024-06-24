@@ -15,28 +15,27 @@ public class AdicionarSenhaFrame extends JFrame {
         setLayout(new GridBagLayout());
 
         JLabel senhaLabel = new JLabel("Digite a senha que deseja guardar:");
-        senhaLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Ajustando tamanho da fonte do label
+        senhaLabel.setFont(new Font("Arial", Font.BOLD, 16)); 
 
         senhaField = new JTextField(20);
-        senhaField.setFont(new Font("Arial", Font.PLAIN, 14)); // Ajustando tamanho da fonte do campo de texto
-        senhaField.setPreferredSize(new Dimension(200, 40)); // Ajustando a altura do campo de texto
+        senhaField.setFont(new Font("Arial", Font.PLAIN, 14)); 
+        senhaField.setPreferredSize(new Dimension(200, 40)); 
 
         JButton adicionarButton = new JButton("Adicionar");
-        adicionarButton.setFont(new Font("Arial", Font.BOLD, 14)); // Ajustando tamanho da fonte do botão
+        adicionarButton.setFont(new Font("Arial", Font.BOLD, 14));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 5, 10); // Espaçamento entre os componentes
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.insets = new Insets(10, 10, 5, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
 
         add(senhaLabel, gbc);
 
-        gbc.gridy++;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(senhaField, gbc);
 
-        gbc.gridy++;
         gbc.fill = GridBagConstraints.NONE;
         add(adicionarButton, gbc);
 
