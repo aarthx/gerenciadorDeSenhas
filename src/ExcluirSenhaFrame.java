@@ -60,8 +60,6 @@ public class ExcluirSenhaFrame extends JFrame {
                 try {
                     GerenciaSenhas.excluiSenha(numeroDaSenha);
                     JOptionPane.showMessageDialog(this, "Senha excluída com sucesso!");
-
-                    dispose(); // Fecha o frame após a exclusão
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Erro ao excluir senha.");

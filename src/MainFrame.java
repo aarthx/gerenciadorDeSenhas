@@ -29,12 +29,11 @@ public class MainFrame extends JFrame {
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel imageLabel = new JLabel(scaledIcon);
 
-
         JLabel headerLabel = new JLabel("Gerenciador de Senhas");
         headerLabel.setFont(fonteDosTitulos);
 
         JButton adicionarButton = new JButton("Adicionar Senha");
-        adicionarButton.setPreferredSize(new Dimension(150, 30));
+        adicionarButton.setPreferredSize(new Dimension(150, 50));
         adicionarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -44,7 +43,7 @@ public class MainFrame extends JFrame {
         });
 
         JButton visualizarButton = new JButton("Visualizar Senhas");
-        visualizarButton.setPreferredSize(new Dimension(150, 30));
+        visualizarButton.setPreferredSize(new Dimension(150, 50));
         visualizarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,7 +53,7 @@ public class MainFrame extends JFrame {
         });
 
         JButton editarButton = new JButton("Editar Senha");
-        editarButton.setPreferredSize(new Dimension(150, 30));
+        editarButton.setPreferredSize(new Dimension(150, 50));
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,7 +63,7 @@ public class MainFrame extends JFrame {
         });
 
         JButton excluirButton = new JButton("Excluir Senha");
-        excluirButton.setPreferredSize(new Dimension(150, 30));
+        excluirButton.setPreferredSize(new Dimension(150, 50));
         excluirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,7 +73,7 @@ public class MainFrame extends JFrame {
         });
 
         JButton sairButton = new JButton("Sair");
-        sairButton.setPreferredSize(new Dimension(150, 30));
+        sairButton.setPreferredSize(new Dimension(150, 50));
         sairButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,6 +83,7 @@ public class MainFrame extends JFrame {
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 0, 10, 0);
         gbc.gridx = 0;
